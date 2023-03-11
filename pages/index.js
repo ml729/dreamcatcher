@@ -44,18 +44,27 @@ export default function Home() {
 
     return (
       <>
-        <VStack w="100%" spacing={4}>
+        <VStack w="100%" spacing={0}>
           <Textarea
             id="dream-input"
             w="90%"
             h="40vh"
             bg="white"
             fontSize="2em"
+            borderBottomRadius="0"
             onChange={(e) => {
               setValue(e.target.value);
             }}
             placeholder={placeholder}/>
-        <Button onClick={onCopy}>{hasCopied ? <RiCheckboxMultipleFill />: <RiCheckboxMultipleBlankLine />}</Button>
+          <Flex justifyContent="flex-end" w="90%" bg="#E2E8F0"
+          borderBottomRadius="var(--chakra-radii-md)">
+        <Button
+          border-color="black"
+          border-style="solid"
+          border-left="5px"
+          borderTopRadius="0"
+          onClick={onCopy}>{hasCopied ? <RiCheckboxMultipleFill />: <RiCheckboxMultipleBlankLine />}</Button>
+      </Flex>
         </VStack>
       </>
     )
