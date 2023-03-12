@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useState, useRef } from "react"
 import {
   ChakraProvider,
   Textarea,
@@ -20,6 +21,7 @@ import {
 } from '@chakra-ui/react'
 
 import { RiCheckboxMultipleFill, RiCheckboxMultipleBlankLine } from "react-icons/ri"
+import { IoReload } from "react-icons/io5"
 
 export default function Home() {
   function MulticolorTitle(props) {
@@ -29,12 +31,41 @@ export default function Home() {
         );
         return coloredChars;
       }
+
+  function WordContainer(props) {
+    const words = ["cat", "dog", "goose", "moose"];
+
+    return (
+        <Card id="button-container" w="90%">
+          <CardBody>
+            <Wrap spacing={4}>
+              <WrapItem>
+                <Button colorScheme='gray'>cat</Button>
+              </WrapItem>
+            </Wrap>
+          </CardBody>
+        </Card>
+
+    )
+
+  }
+
+  const textAreaRef = useRef(null);
+
   function WordButton(props) {
-    function handleClick(e) {
-
+    const [visible, setVisible] = useState(true);
+    const handleClick = () => {
+      setVisible(false);
+      if (textAreaRef.current.value != "") {
+        textAreaRef.current.value += "\n";
+      }
+      textAreaRef.current.value += props.word;
     }
-
-    return <Button colorScheme='gray' onClick={handleClick}>{props.word}</Button>
+    return (
+      visible ?
+        <Button colorScheme='gray' onClick={handleClick}>{props.word}</Button>
+      : null
+    )
 
   }
 
@@ -52,6 +83,7 @@ export default function Home() {
             bg="white"
             fontSize="2em"
             borderBottomRadius="0"
+            ref={textAreaRef}
             onChange={(e) => {
               setValue(e.target.value);
             }}
@@ -94,7 +126,13 @@ export default function Home() {
           <CardBody>
             <Wrap spacing={4}>
               <WrapItem>
-                <Button colorScheme='gray'>cat</Button>
+                <WordButton word="cat" />
+              </WrapItem>
+              <WrapItem>
+                <WordButton word="dog" />
+              </WrapItem>
+              <WrapItem>
+                <WordButton word="goose" />
               </WrapItem>
             </Wrap>
           </CardBody>
