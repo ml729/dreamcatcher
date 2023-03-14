@@ -13,7 +13,9 @@ import {
   ButtonGroup,
   Wrap,
   WrapItem,
+  Box,
   VStack,
+  HStack,
   Center,
   Heading,
   useClipboard,
@@ -92,15 +94,24 @@ export default function Home() {
 
   const textAreaRef = useRef(null);
 
+  function RegenButton(props) {
+    const handleClick = () => {
+      // setVisible(false);
+      setWords(getNewWordArray(6));   }
+    return (
+        <Button colorScheme='gray' onClick={handleClick}><IoReload /></Button>
+    )
+  }
+
   function WordButton(props) {
     // const [visible, setVisible] = useState(true);
     const handleClick = () => {
       // setVisible(false);
       setWords(words.filter(w => w !== props.word).concat(getNewWord(words)));
-      if (textAreaRef.current.value != "") {
+      if (textAreaRef.current != null) {
         textAreaRef.current.value += "\n";
       }
-      textAreaRef.current.value += props.word;
+      textAreaRef.current.value = props.word;
 
     }
     return (
@@ -123,7 +134,7 @@ export default function Home() {
             bg="white"
             fontSize="2em"
             borderBottomRadius="0"
-            ref={textAreaRef}
+            ref={props.ref}
             onChange={(e) => {
               setValue(e.target.value);
             }}
@@ -164,6 +175,7 @@ export default function Home() {
         <div className="centered">
         <Card id="button-container" w="90%">
           <CardBody>
+            <HStack w="100%" style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Wrap spacing={4}>
               {loading ? <WrapItem>
                            <WordButton word="Loading..." />
@@ -182,13 +194,17 @@ export default function Home() {
               {/*   <WordButton word="goose" /> */}
               {/* </WrapItem> */}
             </Wrap>
+              <Box>
+                  <RegenButton />
+              </Box>
+    </HStack>
           </CardBody>
         </Card>
         </div>
 
           <div className="centered">
           {/* <Textarea id="dream-input" w="90%" h="40vh" bg="white" fontSize="2em" placeholder='Write anything that you remember' /> */}
-            <CopyInput placeholder="Write anything that you remember"/>
+            <CopyInput ref={textAreaRef} placeholder="Write anything that you remember"/>
       </div>
         </VStack>
         {/* <p className={styles.description}> */}
