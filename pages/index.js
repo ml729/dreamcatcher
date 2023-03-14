@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import {
   ChakraProvider,
   Textarea,
@@ -32,8 +32,48 @@ export default function Home() {
         return coloredChars;
       }
 
+  const [words, setWords] = useState([]);
+  const [allWords, setAllWords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch('/eff_full.txt')
+      .then(response => response.text())
+      .then(data => {setAllWords(data.split('\n'));});
+  }, []);
+
+  useEffect(() => {
+    if (allWords.length > 0) {
+      setWords(getNewWordArray(6));
+      setLoading(false);
+    }
+  }, [allWords]);
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+  function getNewWord(notInArr=[]) {
+    const r = getRandomInt(allWords.length);
+    return allWords[r];
+  }
+
+  function getNewWordArray(n, arr=[]) {
+    while (arr.length < n) {
+      const newWord = getNewWord(arr);
+      arr = [...arr, newWord];
+    }
+    return arr;
+  }
+
+
+  // const [words, setWords] = useState(["cat", "goose", "dog"]);
+  // set state of words
   function WordContainer(props) {
-    const words = ["cat", "dog", "goose", "moose"];
+
+    // const words = ["cat", "dog", "goose", "moose"];
+
+    if (words.length < 6) {
+
+    }
 
     return (
         <Card id="button-container" w="90%">
@@ -53,18 +93,18 @@ export default function Home() {
   const textAreaRef = useRef(null);
 
   function WordButton(props) {
-    const [visible, setVisible] = useState(true);
+    // const [visible, setVisible] = useState(true);
     const handleClick = () => {
-      setVisible(false);
+      // setVisible(false);
+      setWords(words.filter(w => w !== props.word).concat(getNewWord(words)));
       if (textAreaRef.current.value != "") {
         textAreaRef.current.value += "\n";
       }
       textAreaRef.current.value += props.word;
+
     }
     return (
-      visible ?
         <Button colorScheme='gray' onClick={handleClick}>{props.word}</Button>
-      : null
     )
 
   }
@@ -125,15 +165,22 @@ export default function Home() {
         <Card id="button-container" w="90%">
           <CardBody>
             <Wrap spacing={4}>
-              <WrapItem>
-                <WordButton word="cat" />
-              </WrapItem>
-              <WrapItem>
-                <WordButton word="dog" />
-              </WrapItem>
-              <WrapItem>
-                <WordButton word="goose" />
-              </WrapItem>
+              {loading ? <WrapItem>
+                           <WordButton word="Loading..." />
+                </WrapItem> :
+              words.map(w =>
+                <WrapItem>
+                  <WordButton word={w} />
+                </WrapItem>)
+              }
+
+
+              {/* <WrapItem> */}
+              {/*   <WordButton word="dog" /> */}
+              {/* </WrapItem> */}
+              {/* <WrapItem> */}
+              {/*   <WordButton word="goose" /> */}
+              {/* </WrapItem> */}
             </Wrap>
           </CardBody>
         </Card>
