@@ -58,72 +58,11 @@ export default function Home() {
     return arr;
   }
 
-
-  // set state of words
-  function WordContainer(props) {
-
-  function RegenButton(props) {
-    const handleClick = () => {
-      // setVisible(false);
-      setWords(getNewWordArray(6));   }
-    return (
-      <Button colorScheme='gray' onClick={handleClick}><IoReload /></Button>
-    )
-  }
-  const [words, setWords] = useState([]);
-  const [loading, setLoading] = useState(true);
-    // const words = ["cat", "dog", "goose", "moose"];
-
-  useEffect(() => {
-    if (allWords.length > 0) {
-      setWords(getNewWordArray(6));
-      setLoading(false);
-    }
-  }, [allWords]);
-
-    return (
-                    <Card id="button-container" w="90%">
-                <CardBody>
-
-                   <HStack w="100%" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Wrap spacing={4}>
-                      {loading ? <WrapItem>
-                  <WordButton word="Loading..." />
-                </WrapItem> :
-                       words.map(w =>
-                         <WrapItem>
-                           <WordButton setWords={setWords} words={words} word={w} />
-                         </WrapItem>)
-                      }
-
-
-                      {/* <WrapItem> */}
-                      {/*   <WordButton word="dog" /> */}
-                      {/* </WrapItem> */}
-                      {/* <WrapItem> */}
-                      {/*   <WordButton word="goose" /> */}
-                      {/* </WrapItem> */}
-                    </Wrap>
-                    <Box>
-                      <RegenButton />
-                    </Box>
-                  </HStack>
-      </CardBody></Card>
-
-
-    )
-
-  }
-
-
-
   function WordButton(props) {
-    // const [visible, setVisible] = useState(true);
     const words = props.words;
     const handleClick = () => {
-      // setVisible(false);
       props.setWords(words.filter(w => w !== props.word).concat(getNewWord(words)));
-      if (textAreaRef.current.value != null) {
+      if (textAreaRef.current.value != "") {
         textAreaRef.current.value += "\n";
       }
       textAreaRef.current.value += props.word;
@@ -132,13 +71,51 @@ export default function Home() {
     return (
       <Button colorScheme='gray' onClick={handleClick}>{props.word}</Button>
     )
+  }
 
+  function WordContainer(props) {
+    function RegenButton(props) {
+      const handleClick = () => {
+        // setVisible(false);
+        setWords(getNewWordArray(6));   }
+      return (
+        <Button colorScheme='gray' onClick={handleClick}><IoReload /></Button>
+      )
+    }
+    const [words, setWords] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      if (allWords.length > 0) {
+        setWords(getNewWordArray(6));
+        setLoading(false);
+      }
+    }, [allWords]);
+
+    return (
+      <Card id="button-container" w="90%">
+        <CardBody>
+
+          <HStack w="100%" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Wrap spacing={4}>
+              {loading ? <WrapItem>
+      <WordButton word="Loading..." />
+    </WrapItem> :
+               words.map(w =>
+                 <WrapItem>
+                   <WordButton setWords={setWords} words={words} word={w} />
+                 </WrapItem>)
+              }
+            </Wrap>
+            <Box>
+              <RegenButton />
+            </Box>
+          </HStack>
+        </CardBody></Card>
+    )
   }
 
   const textAreaRef = useRef(null);
-  // useEffect(() => {
-  //   textAreaRef.current = document.getElementById('dream-input');
-  // }, []);
   function CopyInput(props) {
     const placeholder = props.placeholder;
     const { onCopy, value, setValue, hasCopied } = useClipboard("");
@@ -180,7 +157,6 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-
         <main>
           <Heading mt="3%" className={styles.title}>
             {/* <span style={{color: "teal"}}>Dream</span><span style={{color: "pink"}}>catcher</span> */}
@@ -193,77 +169,17 @@ export default function Home() {
             w="100%">
             <div className="centered">
               <WordContainer />
-              {/* <Card id="button-container" w="90%"> */}
-              {/*   <CardBody> */}
-              {/*     <HStack w="100%" style={{ display: 'flex', justifyContent: 'space-between' }}> */}
-              {/*       <Wrap spacing={4}> */}
-              {/*         {loading ? <WrapItem> */}
-              {/*     <WordButton word="Loading..." /> */}
-              {/*   </WrapItem> : */}
-              {/*          words.map(w => */}
-              {/*            <WrapItem> */}
-              {/*              <WordButton word={w} /> */}
-              {/*            </WrapItem>) */}
-              {/*         } */}
-
-
-              {/*         {/\* <WrapItem> *\/} */}
-              {/*         {/\*   <WordButton word="dog" /> *\/} */}
-              {/*         {/\* </WrapItem> *\/} */}
-              {/*         {/\* <WrapItem> *\/} */}
-              {/*         {/\*   <WordButton word="goose" /> *\/} */}
-              {/*         {/\* </WrapItem> *\/} */}
-              {/*       </Wrap> */}
-              {/*       <Box> */}
-              {/*         <RegenButton /> */}
-              {/*       </Box> */}
-              {/*     </HStack> */}
-              {/*   </CardBody> */}
-              {/* </Card> */}
-            </div>
+             </div>
 
             <div className="centered">
-              {/* <Textarea id="dream-input" w="90%" h="40vh" bg="white" fontSize="2em" placeholder='Write anything that you remember' /> */}
               <CopyInput placeholder="Write anything that you remember"/>
             </div>
           </VStack>
-          {/* <p className={styles.description}> */}
-          {/*   lol <code>pages/index.js</code> */}
-          {/* </p> */}
 
-          <div className={styles.grid}>
-            {/* <a href="https://nextjs.org/docs" className={styles.card}> */}
-            {/*   <h3>Documentation &rarr;</h3> */}
-            {/*   <p>Find in-depth information about Next.js features and API.</p> */}
-            {/* </a> */}
-
-            {/* <a href="https://nextjs.org/learn" className={styles.card}> */}
-            {/*   <h3>Learn &rarr;</h3> */}
-            {/*   <p>Learn about Next.js in an interactive course with quizzes!</p> */}
-            {/* </a> */}
-
-            {/* <a */}
-            {/*   href="https://github.com/vercel/next.js/tree/master/examples" */}
-            {/*   className={styles.card} */}
-            {/* > */}
-            {/*   <h3>Examples &rarr;</h3> */}
-            {/*   <p>Discover and deploy boilerplate example Next.js projects.</p> */}
-            {/* </a> */}
-
-            {/* <a */}
-            {/*   href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app" */}
-            {/*   className={styles.card} */}
-            {/* > */}
-            {/*   <h3>Deploy &rarr;</h3> */}
-            {/*   <p> */}
-            {/*     Instantly deploy your Next.js site to a public URL with Vercel. */}
-            {/*   </p> */}
-            {/* </a> */}
-          </div>
         </main>
 
         <footer>
-          Powered by {'React and Next.js'}
+          Powered by {'React, next.js, Chakra UI, and react-icons'}
         </footer>
 
         <style jsx>{`
@@ -281,14 +197,6 @@ export default function Home() {
           display: flex;
           justify-content: center;
         }
-/* .main > * { */
-/* } */
-        /* main > * { */
-        /*   background-color: black; */
-        /*   margin-top: 50px; */
-        /* } */
-
-/* } */
         footer {
           width: 100%;
           height: 100px;
