@@ -2,6 +2,6 @@
 
 [[https://ml729.github.io/dreamcatcher/][Website]]
 
-Assisted dream journaling.
+Assisted dream journaling webapp written with React and Next.js.
 
 Generates random words from [[https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases][EFF's passphrase wordlists]] to help you remember your dreams.
