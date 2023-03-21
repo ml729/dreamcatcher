@@ -36,7 +36,7 @@ export default function Home() {
 
   const [allWords, setAllWords] = useState([]);
   useEffect(() => {
-    fetch('/eff_full.txt')
+    fetch('eff_full.txt')
       .then(response => response.text())
       .then(data => {setAllWords(data.split('\n'));});
   }, []);
