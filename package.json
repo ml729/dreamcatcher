@@ -1,6 +1,6 @@
 {
   "private": true,
-  "homepage": "https://ml729.github.io/dreamcatcher/"
+  "homepage": "https://ml729.github.io/dreamcatcher/",
   "scripts": {
     "dev": "next dev",
     "build": "next build && next export",
